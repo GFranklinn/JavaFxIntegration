@@ -55,9 +55,9 @@
                   </GridPane>
                   <HBox alignment="CENTER" layoutX="208.0" layoutY="257.0" prefHeight="29.0" prefWidth="170.0" spacing="6.0">
                      <children>
-                        <Button mnemonicParsing="false" text="New" />
-                        <Button mnemonicParsing="false" text="Edit..." />
-                        <Button mnemonicParsing="false" text="Delete" />
+                        <Button mnemonicParsing="false" onAction="#handleNewPerson" text="New" />
+                        <Button mnemonicParsing="false" onAction="#handleEditPerson" text="Edit..." />
+                        <Button mnemonicParsing="false" onAction="#handleDeletePerson" text="Delete" />
                      </children>
                   </HBox>
                </children>

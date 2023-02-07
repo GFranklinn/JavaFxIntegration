@@ -60,7 +60,7 @@ public class Person {
 		return street.get();
 	}
 	
-	public void SetStreet(String street) {
+	public void setStreet(String street) {
 		this.street.set(street);;
 	}
 	
@@ -90,7 +90,10 @@ public class Person {
 	
 	public StringProperty cityProperty() {
 		return city;
-		
+	}
+	
+	public LocalDate getBirthday() {
+		return birthday.get();
 	}
 	
 	public void setBirthday(LocalDate birthday) {
