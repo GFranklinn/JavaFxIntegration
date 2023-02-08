@@ -1,19 +1,32 @@
 package ch.makery.address;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.prefs.Preferences;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import org.controlsfx.dialog.Dialogs;
 
 import ch.makery.address.model.Person;
+import ch.makery.address.model.PersonListWrapper;
 import ch.makery.address.view.PersonEditDialogController;
 import ch.makery.address.view.PersonOverviewController;
+import ch.makery.address.view.RootLayoutController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+
 
 public class MainApp extends Application {
 
@@ -23,8 +36,10 @@ public class MainApp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
+		
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("AdressApp");
+		this.primaryStage.getIcons().add(new Image("file:resources/images/addres_book_image.png"));
 		
 		initRootLayout();
 		
@@ -33,18 +48,26 @@ public class MainApp extends Application {
 	}
 
 	public void initRootLayout() {
+		
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
-		
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			RootLayoutController controller = loader.getController();
+			controller.setMainApp(this);
+			primaryStage.show();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-			
+		
+		File file = getPersonFilePath();
+		if (file != null) {
+			loadPersonDataFromFile(file);
+		}
 	}
 	
 	public void showPersonOverview() {
@@ -55,6 +78,7 @@ public class MainApp extends Application {
 			rootLayout.setCenter(personOverview);
 			PersonOverviewController controller = loader.getController();
 			controller.setMainApp(this);
+			
 	}   catch (IOException e) {
 			e.printStackTrace();
 	}
@@ -104,14 +128,69 @@ public class MainApp extends Application {
 		personData.add(new Person("Martin", "Kobe"));
 	}
 	
-	public ObservableList<Person> getPersondata() {
+	public ObservableList<Person> getPersonData() {
 		return personData;
 	}
+	
+	public File getPersonFilePath() {
+		Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+		String filePath = prefs.get("filePath", null);
+		if (filePath != null) {
+			return new File(filePath);
+		} else {
+			return null;
+		}
+		
+	}
+	
+	public void setPersonFilePath(File file) {
+		Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+		if (file != null) {
+			prefs.put("filePath", file.getPath());
+			primaryStage.setTitle("AddressApp - " + file.getName());
+			
+		} else {
+			prefs.remove("filePath");
+			primaryStage.setTitle("AddressApp");
+		}
+	}
+	
+	public void loadPersonDataFromFile(File file) {
+		try {
+			JAXBContext context = JAXBContext.newInstance(PersonListWrapper.class);
+			Unmarshaller um = context.createUnmarshaller();
+			PersonListWrapper wrapper = (PersonListWrapper) um.unmarshal(file);
+			personData.clear();
+			personData.addAll(wrapper.getPersons());
+			setPersonFilePath(file);
+			
+		} catch (Exception e) {
+			Dialogs.create()
+					 .title("Erro")
+					 .masthead("Não foi possível carregar dados do arquivo:\n"
+					 		   + file.getPath()).showException(e);
+		}
+	}
+	
+	public void savePersonDataToFile(File file) {
+		try {
+			JAXBContext context = JAXBContext.newInstance(PersonListWrapper.class);
+			Marshaller m = context.createMarshaller();
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			PersonListWrapper wrapper = new PersonListWrapper();
+			wrapper.setPersons(personData);
+			m.marshal(wrapper, file);
+			setPersonFilePath(file);
+			
+		} catch (Exception e) {
+			Dialogs.create().title("Erro")
+					.masthead("Não foi possível salvar os dados do arquivo:\n" 
+							  + file.getPath()).showException(e);
+		}
+}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
-	
-	
+		
 }

@@ -47,7 +47,7 @@ private void initialize() {
 	
 public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-		personTable.setItems(mainApp.getPersondata());
+		personTable.setItems(mainApp.getPersonData());
 	}
 
 
@@ -75,7 +75,7 @@ private void handleDeletePerson() {
 		personTable.getItems().remove(selectedIndex);
 	} else {
 		Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Nenhima seleção");
+			alert.setTitle("Nenhuma seleção");
 			alert.setHeaderText("Nenhuma Pessoa Selecionada");
 			alert.setContentText("Por favor, selecione uma pessoa na tabela");
 			
@@ -88,7 +88,7 @@ private void handleNewPerson() {
 	Person tempPerson = new Person();
 	boolean okClicked = mainApp.showPersonEditDialog(tempPerson);
 	if (okClicked) {
-		mainApp.getPersondata().add(tempPerson);
+		mainApp.getPersonData().add(tempPerson);
 	}
 }
 @FXML
