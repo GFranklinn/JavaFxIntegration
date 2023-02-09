@@ -12,6 +12,7 @@ import org.controlsfx.dialog.Dialogs;
 
 import ch.makery.address.model.Person;
 import ch.makery.address.model.PersonListWrapper;
+import ch.makery.address.view.BirthdayStatisticsController;
 import ch.makery.address.view.PersonEditDialogController;
 import ch.makery.address.view.PersonOverviewController;
 import ch.makery.address.view.RootLayoutController;
@@ -27,7 +28,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-
 public class MainApp extends Application {
 
 	private Stage primaryStage;
@@ -36,7 +36,6 @@ public class MainApp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("AdressApp");
 		this.primaryStage.getIcons().add(new Image("file:resources/images/addres_book_image.png"));
@@ -88,29 +87,29 @@ public class MainApp extends Application {
 			return primaryStage;
 	}
 	
-	public boolean showPersonEditDialog(Person person) {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/PersonEditDialog.fxml"));
-			AnchorPane page = (AnchorPane) loader.load();
+public boolean showPersonEditDialog(Person person) {
+	try {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(MainApp.class.getResource("view/PersonEditDialog.fxml"));
+		AnchorPane page = (AnchorPane) loader.load();
 			
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Edit Person");
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(primaryStage);
-			Scene scene = new Scene(page);
-			dialogStage.setScene(scene);
+		Stage dialogStage = new Stage();
+		dialogStage.setTitle("Edit Person");
+		dialogStage.initModality(Modality.WINDOW_MODAL);
+		dialogStage.initOwner(primaryStage);
+		Scene scene = new Scene(page);
+		dialogStage.setScene(scene);
 
-			PersonEditDialogController controller = loader.getController();
-			controller.setDialogStage(dialogStage);
-			controller.setPerson(person);
+		PersonEditDialogController controller = loader.getController();
+		controller.setDialogStage(dialogStage);
+		controller.setPerson(person);
 			
-			dialogStage.showAndWait();
-			return controller.isOkClicked();
+		dialogStage.showAndWait();
+		return controller.isOkClicked();
 		
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
+	} catch (IOException e) {
+		e.printStackTrace();
+		return false;
 		}
 	}
 
@@ -183,10 +182,31 @@ public class MainApp extends Application {
 			setPersonFilePath(file);
 			
 		} catch (Exception e) {
-			Dialogs.create().title("Erro")
-					.masthead("Não foi possível salvar os dados do arquivo:\n" 
+			if(file != null)
+				Dialogs.create().title("Erro")
+						.masthead("Não foi possível salvar os dados do arquivo:\n" 
 							  + file.getPath()).showException(e);
 		}
+}
+	
+    public void showBirthdayStatistics() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader();
+    		loader.setLocation(MainApp.class.getResource("view/BirthdayStatistics.fxml"));
+    		AnchorPane page = (AnchorPane) loader.load();
+    		Stage dialogStage = new Stage();
+    		dialogStage.setTitle("Birthday Statistics");
+    		dialogStage.initModality(Modality.WINDOW_MODAL);
+    		dialogStage.initOwner(primaryStage);
+    		Scene scene = new Scene(page);
+    		dialogStage.setScene(scene);
+    		BirthdayStatisticsController controller = loader.getController();
+    		controller.setPersonData(personData);
+    		dialogStage.show();
+		
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
 }
 	
 	public static void main(String[] args) {

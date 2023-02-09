@@ -40,72 +40,72 @@ public class Person {
 	}
 	
 	public void setFirstName(String firstName) {
-		this.firstName.set(firstName);
+			this.firstName.set(firstName);
 	}
 
 	public StringProperty firstNameProperty() {
-		return firstName;
+			return firstName;
 	}
 	
 	public String getLastName() {
-		return lastName.get();
+			return lastName.get();
 	}
 	
 	public void setLastName(String lastName) {
-		this.lastName.set(lastName);
+			this.lastName.set(lastName);
 	}
 	
 	public StringProperty lastNameProperty() {
-		return lastName;
+			return lastName;
 	}
 	
 	public String getStreet() {
-		return street.get();
+			return street.get();
 	}
 	
 	public void setStreet(String street) {
-		this.street.set(street);;
+			this.street.set(street);;
 	}
 	
 	public StringProperty streetProperty() {
-		return street;
+			return street;
 	}
 	
 	public int getPostalCode() {
-		return postalCode.get();
+			return postalCode.get();
 	}
 	
 	public void setPostalCode(int postalCode) {
-		this.postalCode.set(postalCode);
+			this.postalCode.set(postalCode);
 	}
 	
 	public IntegerProperty postalCodeProperty() {
-		return postalCode;
+			return postalCode;
 	}
 	
 	public String getCity() {
-		return city.get();
+			return city.get();
 	}
 	
 	public void setCity(String city) {
-		this.city.set(city);
+			this.city.set(city);
 	}
 	
 	public StringProperty cityProperty() {
-		return city;
+			return city;
 	}
 	
 	@XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getBirthday() {
-		return birthday.get();
+			return birthday.get();
 	}
 	
 	public void setBirthday(LocalDate birthday) {
-		this.birthday.set(birthday);
+			this.birthday.set(birthday);
 	}
 	
 	public ObjectProperty<LocalDate> birthdayProperty() {
-		return birthday;
+			return birthday;
 	}
 	
 }
