@@ -44,7 +44,7 @@
 }
 
 .table-view .column-header .label {
-	-fx-font-size: 20pt;
+	-fx-font-size: 13pt;
 	-fx-font-family: "Segoe UI Light";
 	-fx-text-fill: white;
 	-fx-alignment: center-left;
@@ -115,7 +115,7 @@
 }
 .button:default {
 	-fx-background-color: -fx-focus-color;
-	-fx-text-fill: #ffffff;;
+	-fx-text-fill: #ffffff
 }
 .button:default:hover {
 	-fx-background-color: derive(-fx-focus-color,30%);
